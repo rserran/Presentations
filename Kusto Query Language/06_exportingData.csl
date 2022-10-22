@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // exportingData.csl
-// Written by Taiob M Ali
+// Written by Taiob Ali
+// SqlWorldWide.com
 //------------------------------------------------------------------------------
 // Run this demo in
 // https://dataexplorer.azure.com/clusters/help/databases/Samples
@@ -12,6 +13,7 @@
 
 // It will actually create a TXT file, and put it in clipboard. 
 // Open PowerBI desktop
+// Login with your account (my account taiob@sqlworldwide.onmicrosoft.com)
 // 'Get Data' -> 'Blank Query' -> 'Advanced Query Editor' menu choices.
 // From there, paste in the M query from the clipboard.
 

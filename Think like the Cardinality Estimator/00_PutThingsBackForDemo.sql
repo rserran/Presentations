@@ -1,9 +1,9 @@
 /*============================================================================
 PutThingsBackForDemo.sql
-Written by Taiob M Ali
+Written by Taiob Ali
 SqlWorldWide.com
 
-This script will restore WideWorldImporters database to set things back as is for demo.
+This script will restore WideWorldImporters database to set things back for demo.
 
 Instruction to run this script
 --------------------------------------------------------------------------
@@ -12,33 +12,39 @@ https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importer
 
 Change:
 1. Backup location
-2. Data file location
-3. Log file location
+If you do not want to restore in default location change:
+	1.Data file location
+	2. Log file location
 ============================================================================*/
 
-USE [master]
+USE [master];
 GO
+
 DECLARE @dbname nvarchar(128)
 SET @dbname = N'WideWorldImporters'
 
-IF (EXISTS (SELECT name 
-FROM master.dbo.sysdatabases 
-WHERE ('[' + name + ']' = @dbname 
-  OR name = @dbname)))
+IF (EXISTS (SELECT name
+FROM master.dbo.sysdatabases
+WHERE ('[' + name + ']' = @dbname
+	OR name = @dbname)))
 BEGIN
-ALTER DATABASE [WideWorldImporters] SET RESTRICTED_USER WITH ROLLBACK IMMEDIATE;
+	ALTER DATABASE [WideWorldImporters] SET RESTRICTED_USER WITH ROLLBACK IMMEDIATE;
 END
 GO
 
 DECLARE @fileName nvarchar(255)
 SET @fileName = N'C:\WideWorldImporters-Full.bak'
---Restoring to default path
+
+/*
+Restoring to default path
+*/
+
 RESTORE DATABASE [WideWorldImporters] 
 FROM DISK = N'C:\WideWorldImporters-Full.bak' WITH FILE = 1, 
 NOUNLOAD, replace, stats = 5 ;
 GO
 
-SELECT 
+SELECT
 	name,
 	compatibility_level
 FROM sys.databases;
@@ -46,16 +52,19 @@ GO
 
 ALTER DATABASE WideWorldImporters  
 SET COMPATIBILITY_LEVEL = 140;  
-GO 
+GO
 
-SELECT 
+SELECT
 	name,
 	compatibility_level
 FROM sys.databases;
 GO
 
---updating statistics since we are using an old backup
-USE [WideWorldImporters]
+/*
+updating statistics since we are using an old backup
+*/
+
+USE [WideWorldImporters];
 GO
 UPDATE STATISTICS Sales.Orders;
 GO
