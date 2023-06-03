@@ -1,20 +1,16 @@
 /*************************************************************
--- Scirpt Name: 06_BatchModeOnRowstore.sql
--- This code is copied from
--- https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
-
--- Modified by Taiob Ali
--- May 19, 2022
-
--- Batch mode on rowstore
-
--- See https://aka.ms/IQP for more background
-
--- Demo scripts: https://aka.ms/IQPDemos 
-
--- This demo is on SQL Server 2019 and Azure SQL DB
-
--- Email IntelligentQP@microsoft.com for questions\feedback
+	Scirpt Name: 07_BatchModeOnRowstore.sql
+	This code is copied from
+	https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
+	
+	Modified by Taiob Ali
+	May 29, 2023
+	Batch mode on rowstore
+	SQL Server (Starting with SQL Server 2019 (15.x)), Azure SQL Database
+	Enterprise only
+	See https://aka.ms/IQP for more background
+	Demo scripts: https://aka.ms/IQPDemos 
+	mail IntelligentQP@microsoft.com for questions\feedback
 *************************************************************/
 
 USE [master];
@@ -35,6 +31,7 @@ Row mode due to hint
 Look at the properties of OrderHistoryExtended table scan
 Also notice storage type = RowStore
 */
+
 SELECT [Tax Rate],
 	[Lineage Key],
 	[Salesperson Key],
@@ -51,7 +48,10 @@ ORDER BY [Tax Rate],
 	[Salesperson Key]
 OPTION (RECOMPILE, USE HINT('DISALLOW_BATCH_MODE'));
 
-/* Batch mode on rowstore eligible */
+/* 
+	Batch mode on rowstore eligible 
+*/
+
 SELECT [Tax Rate],
 	[Lineage Key],
 	[Salesperson Key],
@@ -68,7 +68,9 @@ ORDER BY [Tax Rate],
 	[Salesperson Key]
 OPTION (RECOMPILE);
 
-/* If you want to see that this feature is not available pre 2019 (15.x) */
+/* 
+	If you want to see that this feature is not available pre 2019 (15.x) 
+*/
 
 ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 140;
 GO
@@ -90,6 +92,9 @@ ORDER BY [Tax Rate],
 OPTION (RECOMPILE);
 GO
 
-/* Revert compatibility level for next demo */
+/* 
+	Revert compatibility level for next demo 
+*/
+
 ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 150;
 GO

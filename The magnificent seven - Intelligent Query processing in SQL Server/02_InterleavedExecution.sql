@@ -1,28 +1,26 @@
 /*************************************************************
--- Scirpt Name: 03_InterleavedExecution.sql
--- This code is copied from
--- https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
-
--- Modified by Taiob Ali
--- May 19, 2022
-
--- Interleaved Execution
-
--- See https://aka.ms/IQP for more background
-
--- Demo scripts: https://aka.ms/IQPDemos 
-
--- This demo is on SQL Server 2017 and Azure SQL DB
-
--- Last updated 1/29/2020 (Credit: Milos Radivojevic)
--- Changed @event to varchar(30) from varchar(15)
--- Added date range to 'Mild Recession' branch
-
--- Email IntelligentQP@microsoft.com for questions\feedback
+	 Script Name: 02_InterleavedExecution.sql
+	 This code is copied from
+	 https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
+	
+	 Modified by Taiob Ali
+	 May 29, 2023
+	
+	 Interleaved Execution
+	 Applies to: SQL Server (Starting with SQL Server 2017 (14.x)), Azure SQL Database
+	 Available in all editions
+	 See https://aka.ms/IQP for more background
+	 Demo scripts: https://aka.ms/IQPDemos	 
+	
+	 Last updated 1/29/2020 (Credit: Milos Radivojevic)
+	 Changed @event to varchar(30) from varchar(15)
+	 Added date range to 'Mild Recession' branch
+	
+	 Email IntelligentQP@microsoft.com for questions\feedback
 **************************************************************/
 
 /*
-Create a multi-statement table-valued functions (MSTVFs)
+	Create a multi-statement table-valued functions (MSTVFs)
 */
 
 USE [WideWorldImportersDW];
@@ -123,7 +121,10 @@ BEGIN
 END
 GO
 
-/* Demo starts here */
+/* 
+	Demo starts here 
+*/
+
 USE [master];
 GO
 
@@ -137,11 +138,12 @@ ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 GO
 
 /*
-Turn on Actual Execution plan ctrl+M
-look at the new estimated number of rows=100
-Look at the spill warning due to low estimate
-Show the new attribute 'ContainsInterleavedExecutionCandidates' but not executed
+	Turn on Actual Execution plan ctrl+M
+	look at the new estimated number of rows=100 at Node Id =4, Table scan
+	Look at the spill warning due to low estimate
+	Show the new attribute 'ContainsInterleavedExecutionCandidates' but not executed
 */
+
 SELECT [fo].[Order Key], [fo].[Description], [fo].[Package],
 		[fo].[Quantity], [foo].[OutlierEventQuantity]
 FROM [Fact].[Order] AS [fo]
@@ -164,10 +166,11 @@ WHERE [si].[Lead Time Days] > 0
 GO
 
 /*
-We no longer have spill-warnings, as we're granting more memory based on the true row count 
-flowing from the MSTVF table scan
-look at the new estimated and actual row for the function call
+	We no longer have spill-warnings, as we're granting more memory based on the true row count 
+	flowing from the MSTVF table scan
+	look at the new estimated and actual row for the function call
 */
+
 USE [master];
 GO
 
@@ -181,9 +184,10 @@ ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 GO
 
 /*
-Show the new attribute 'ContainsInterleavedExecutionCandidates' in the root node
-Show the new attribute 'IsInterleavedExecuted' in the table valued function node id = 1
+	Show the new attribute 'ContainsInterleavedExecutionCandidates' in the root node
+	Show the new attribute 'IsInterleavedExecuted' in the table valued function node id = 1
 */
+
 SELECT [fo].[Order Key], [fo].[Description], [fo].[Package],
 		[fo].[Quantity], [foo].[OutlierEventQuantity]
 FROM [Fact].[Order] AS [fo]

@@ -1,20 +1,16 @@
 /********************************************************** 
--- Scirpt Name: 02_TableVarDefCompilaiton.sql
--- This code is copied from
--- https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
-
--- Modified by Taiob Ali
--- May 19, 2022
-
--- Table variable deferred compilation
-
--- See https://aka.ms/IQP for more background
-
--- Demo scripts: https://aka.ms/IQPDemos 
-
--- This demo is on SQL Server 2019 and Azure SQL DB
-
--- Email IntelligentQP@microsoft.com for questions\feedback
+	Scirpt Name: 02A_TableVarDefCompilaiton.sql
+	This code is copied from
+	https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing
+	
+	Modified by Taiob Ali
+	June 02, 2023
+	
+	Table variable deferred compilation
+	Applies to: SQL Server (Starting with SQL Server 2019 (15.x)), Azure SQL Database
+	See https://aka.ms/IQP for more background
+	Demo scripts: https://aka.ms/IQPDemos 
+	Email IntelligentQP@microsoft.com for questions\feedback
 ************************************************************/
 
 USE [master];
@@ -30,14 +26,14 @@ ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 GO
 
 /*
-Turn on Actual Execution plan ctrl+M
-Look at estimated rows, speed, join algorithm
-Estimated number of rows: 1
-Actual number of row: 490928
-Thick flow going to Nested loop join
-Row ID lookup
-Low memory grant caused a sort spill
-Takes about ~20 seconds in my laptop
+	Turn on Actual Execution plan ctrl+M
+	Look at estimated rows, speed, join algorithm
+	Estimated number of rows: 1
+	Actual number of row: 490928
+	Thick flow going to Nested loop join
+	Row ID lookup
+	Low memory grant caused a sort spill
+	Takes about ~20 seconds in my laptop
 */
 
 DECLARE @Order TABLE 
