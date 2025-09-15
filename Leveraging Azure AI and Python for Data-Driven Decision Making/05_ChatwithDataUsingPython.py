@@ -10,15 +10,19 @@
 import os
 
 from sqlalchemy.engine.url import URL
+#from flask_sqlalchemy import SQLAlchemy
 
+#from httpcore import URL
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
 
 from langchain_openai import AzureChatOpenAI
 
 from langchain.agents import AgentType
-from langchain.agents import create_sql_agent
+#from langchain.agents import create_sql_agent
+from langchain_community.agent_toolkits.sql.base import create_sql_agent
 from langchain.prompts.chat import ChatPromptTemplate
+from pgvector.sqlalchemy import Vector
 
 # Set up a prompt to nudge the AI in a certain direction
 final_prompt = ChatPromptTemplate.from_messages(
@@ -34,17 +38,17 @@ final_prompt = ChatPromptTemplate.from_messages(
 
 os.environ["SQL_SERVER_USERNAME"] = "taiob"
 os.environ["SQL_SERVER_ENDPOINT"] = "ta-aidemosqlserver.database.windows.net"
-os.environ["SQL_SERVER_PASSWORD"] = "*****************"
+os.environ["SQL_SERVER_PASSWORD"] = "September19$$"  # Replace with your actual password
 os.environ["SQL_SERVER_DATABASE"] = "testdata"
 
 # And then environment variables for OpenAI
 # Make sure to update this as required.
 os.environ["OPENAI_API_TYPE"] = "azure"
-os.environ["AZURE_OPENAPI_API_VERSION"] = "2024-08-01-preview"
-os.environ["AZURE_ENDPOINT"] = "https://ta-openai.openai.azure.com/"
-os.environ["AZURE_OPENAI_ENDPOINT"] = "https://ta-openai.openai.azure.com/"
+os.environ["AZURE_OPENAPI_API_VERSION"] = "2025-01-01-preview"
+os.environ["AZURE_ENDPOINT"] = "https://ta-openai2.openai.azure.com/"
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://ta-openai2.openai.azure.com/"
 # Get the key from openAI deployment in Azure. 
-os.environ["AZURE_OPENAI_API_KEY"] = "******************************************************************"
+os.environ["AZURE_OPENAI_API_KEY"] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" # Replace with your actual key
 
 # Set up the dictionary to hold the database connection details
 db_config = {
@@ -67,9 +71,9 @@ db = SQLDatabase.from_uri(db_url)
 languageModel = AzureChatOpenAI(
             # The randomness of the response. A temperature of 0 is more deterministic and focussed.
             temperature=0,
-            deployment_name="ta-model-gpt-4",
-            azure_endpoint=os.environ["AZURE_ENDPOINT"],
-            openai_api_version=os.environ["AZURE_OPENAPI_API_VERSION"],
+            deployment_name="ta-mode-gpt-4",
+            azure_endpoint= os.environ["AZURE_ENDPOINT"],
+            openai_api_version= os.environ["AZURE_OPENAPI_API_VERSION"],
             openai_api_key=os.environ["AZURE_OPENAI_API_KEY"],
             streaming=True,
             model="gpt-4"
@@ -131,6 +135,8 @@ askSQL("how many rows are there in the walmartProducts table?")
 askSQL("What is the average review_count for all products?")
 
 askSQL("How many distinct root category are there?")
+
+askSQLVerbose("What is the average review_count for all products?")
 
 askSQLVerbose("How many distinct root category are there?")
 
